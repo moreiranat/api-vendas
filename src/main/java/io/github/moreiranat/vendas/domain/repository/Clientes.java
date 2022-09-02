@@ -1,4 +1,4 @@
-package io.github.moreiranat.vendas.domain.repositorio;
+package io.github.moreiranat.vendas.domain.repository;
 
 import io.github.moreiranat.vendas.domain.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package io.github.moreiranat.vendas;
 
 import io.github.moreiranat.vendas.domain.entity.Cliente;
-import io.github.moreiranat.vendas.domain.repositorio.Clientes;
+import io.github.moreiranat.vendas.domain.repository.Clientes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
