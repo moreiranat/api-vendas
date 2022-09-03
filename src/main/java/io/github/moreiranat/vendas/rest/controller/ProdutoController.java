@@ -1,7 +1,7 @@
 package io.github.moreiranat.vendas.rest.controller;
 
 import io.github.moreiranat.vendas.domain.entity.Produto;
-import io.github.moreiranat.vendas.domain.repository.Produtos;
+import io.github.moreiranat.vendas.domain.repository.ProdutoRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,9 @@ import static org.springframework.http.HttpStatus.*; //para nao ficar repetindo 
 @RequestMapping("/api/produtos") //url base da api de produtos
 public class ProdutoController {
 
-    private Produtos repository;
+    private ProdutoRepository repository;
 
-    public ProdutoController(Produtos repository) {
+    public ProdutoController(ProdutoRepository repository) {
         this.repository = repository;
     }
 
