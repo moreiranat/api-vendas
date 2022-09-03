@@ -1,20 +1,31 @@
 package io.github.moreiranat.vendas.rest.controller;
 
 import io.github.moreiranat.vendas.domain.entity.Cliente;
+import io.github.moreiranat.vendas.domain.repository.Clientes;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class ClienteController {
 
-    @RequestMapping(
-            value = {"/api/clientes/hello/{nome}", "/api/hello"},
-            method = RequestMethod.POST,
-            consumes = {"apllication/json", "application/xml"},
-            produces = {"apllication/json", "application/xml"}
-    )
+    private Clientes clientes;
+
+    public ClienteController(Clientes clientes) {
+        this.clientes = clientes;
+    }
+
+    @GetMapping("/api/clientes/{id}")
     @ResponseBody
-    public Cliente helloCliente(@PathVariable("nome") String nomeCliente, RequestBody Cliente cliente) {
-        return String.format("Hello %s ", nomeCliente);
+    public ResponseEntity getClienteById(@PathVariable Integer id) {
+        Optional<Cliente> cliente = clientes.findById(id);
+
+        if(cliente.isPresent()) {
+            return  ResponseEntity.ok(cliente.get());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
