@@ -35,4 +35,17 @@ public class ClienteController {
         Cliente clienteSalvo = clientes.save(cliente);
         return ResponseEntity.ok(clienteSalvo);
     }
+
+    @DeleteMapping("/api/clientes/{id}")
+    @ResponseBody
+    public ResponseEntity delete(@PathVariable Integer id) { //só recebe parâmetros via URL, não recebe no corpo da requisição
+        Optional<Cliente> cliente = clientes.findById(id);
+
+        if(cliente.isPresent()) {
+            clientes.delete(cliente.get());
+            return ResponseEntity.noContent().build(); //nao retorna nada no corpo de resposta da requisicao, só o codigo de status mesmo
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }
