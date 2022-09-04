@@ -3,10 +3,10 @@ package io.github.moreiranat.vendas;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class VendasApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
