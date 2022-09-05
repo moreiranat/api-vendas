@@ -4,6 +4,7 @@ import io.github.moreiranat.vendas.domain.entity.Cliente;
 import io.github.moreiranat.vendas.domain.entity.ItemPedido;
 import io.github.moreiranat.vendas.domain.entity.Pedido;
 import io.github.moreiranat.vendas.domain.entity.Produto;
+import io.github.moreiranat.vendas.domain.enums.StatusPedido;
 import io.github.moreiranat.vendas.domain.repository.ClienteRepository;
 import io.github.moreiranat.vendas.domain.repository.ItemPedidoRepository;
 import io.github.moreiranat.vendas.domain.repository.PedidoRepository;
@@ -42,6 +43,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedidos = converterItens(pedido, dto.getItens());
         repository.save(pedido);
