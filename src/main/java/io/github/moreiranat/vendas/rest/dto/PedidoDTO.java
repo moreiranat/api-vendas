@@ -1,5 +1,6 @@
 package io.github.moreiranat.vendas.rest.dto;
 
+import io.github.moreiranat.vendas.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class PedidoDTO { //DTO: Data Transfer Object - padrao que serve para map
     @NotNull(message = "Campo total do pedido é obrigatório.")
     private BigDecimal total;
 
+    @NotEmptyList(message = "Pedido não pode ser realizado sem itens.")
     private List<ItemPedidoDTO> itens;
 }
