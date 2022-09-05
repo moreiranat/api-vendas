@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class PedidoDTO { //DTO: Data Transfer Object - padrao que serve para mapear um objeto com propriedades simples
 
-    @NotNull(message = "Informe o código do cliente.")
+    @NotNull(message = "{campo.codigo-cliente.obrigatorio}")
     private Integer cliente; //id do cliente
 
-    @NotNull(message = "Campo total do pedido é obrigatório.")
+    @NotNull(message = "{campo.total-pedido.obrigatorio}")
     private BigDecimal total;
 
-    @NotEmptyList(message = "Pedido não pode ser realizado sem itens.")
+    @NotEmptyList(message = "{campo.items-pedido.obrigatorio}")
     private List<ItemPedidoDTO> itens;
 }
