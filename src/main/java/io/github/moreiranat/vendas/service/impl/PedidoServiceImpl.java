@@ -9,6 +9,7 @@ import io.github.moreiranat.vendas.domain.repository.ClienteRepository;
 import io.github.moreiranat.vendas.domain.repository.ItemPedidoRepository;
 import io.github.moreiranat.vendas.domain.repository.PedidoRepository;
 import io.github.moreiranat.vendas.domain.repository.ProdutoRepository;
+import io.github.moreiranat.vendas.exception.PedidoNaoEncontradoException;
 import io.github.moreiranat.vendas.exception.RegraNegocioException;
 import io.github.moreiranat.vendas.rest.dto.ItemPedidoDTO;
 import io.github.moreiranat.vendas.rest.dto.PedidoDTO;
@@ -55,6 +56,18 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return repository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        repository
+                .findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return repository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException());
+
     }
 
     private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens) {

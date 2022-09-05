@@ -1,5 +1,6 @@
 package io.github.moreiranat.vendas.rest.controller;
 
+import io.github.moreiranat.vendas.exception.PedidoNaoEncontradoException;
 import io.github.moreiranat.vendas.exception.RegraNegocioException;
 import io.github.moreiranat.vendas.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,12 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleRegraNegocioException(RegraNegocioException exception) {
         String mensagemErro = exception.getMessage();
         return new ApiErrors(mensagemErro);
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNotFoundException(PedidoNaoEncontradoException exception) {
+        return new ApiErrors(exception.getMessage());
 
     }
 
