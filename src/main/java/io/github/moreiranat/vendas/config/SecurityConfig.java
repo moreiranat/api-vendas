@@ -14,13 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Lazy //Anotação para resolver problema de dependências circulares
+    @Lazy(true) //Anotação para resolver problema de dependências circulares
     @Autowired
     private UsuarioServiceImpl usuarioService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
