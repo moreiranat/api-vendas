@@ -1,6 +1,9 @@
 package io.github.moreiranat.vendas.config;
 
+import io.github.moreiranat.vendas.service.impl.UsuarioServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Lazy //Anotação para resolver problema de dependências circulares
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 
@@ -20,11 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //configura a autenticacao
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("fulano")
-                .password(passwordEncoder().encode("123"))
-                .roles("USER", "ADMIN");
+        auth
+                .userDetailsService(usuarioService)
+                .passwordEncoder(passwordEncoder()); //para comparar a senha do usuario
     }
 
     //configura a autorizacao
