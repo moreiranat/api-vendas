@@ -1,6 +1,8 @@
 package io.github.moreiranat.vendas;
 
 import io.github.moreiranat.vendas.domain.entity.Usuario;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +30,38 @@ public class JwtService {
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
         Date data = Date.from(instant);
+
         return Jwts
-                    .builder()
+                .builder()
                 .setSubject(usuario.getLogin())
                 .setExpiration(data)
                 .signWith(SignatureAlgorithm.HS512, chaveAssinatura)
                 .compact();
+    }
+
+    //metodo para obter as informacoes do token
+    private Claims obterClaims(String token) throws ExpiredJwtException {
+        return Jwts
+                 .parser()
+                 .setSigningKey(chaveAssinatura)
+                 .parseClaimsJws(token)
+                 .getBody();
+    }
+
+    public boolean tokenValido(String token) {
+        try {
+            Claims claims = obterClaims(token);
+            Date dataExpiracao = claims.getExpiration();
+            LocalDateTime data = dataExpiracao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            return !LocalDateTime.now().isAfter(data); //o token é valido quando a dataHoraAtual nao eh depois da data de expiracao do token
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //serve para saber quem é o usuario que vai estar logado, diz quem é o usuario que mandou o token
+    public String obterLoginUsuario(String token) throws ExpiredJwtException {
+        return (String) obterClaims(token).getSubject();
     }
 
     public static void main(String[] args) {
@@ -42,5 +70,10 @@ public class JwtService {
         Usuario usuario = Usuario.builder().login("fulano").build();
         String token = service.gerarToken(usuario);
         System.out.println(token);
+
+        boolean isTokenValido = service.tokenValido(token);
+        System.out.println("O token está válido? " + isTokenValido);
+
+        System.out.println(service.obterLoginUsuario(token));
     }
 }
