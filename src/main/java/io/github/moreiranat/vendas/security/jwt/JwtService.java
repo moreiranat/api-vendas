@@ -1,5 +1,6 @@
-package io.github.moreiranat.vendas;
+package io.github.moreiranat.vendas.security.jwt;
 
+import io.github.moreiranat.vendas.VendasApplication;
 import io.github.moreiranat.vendas.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -64,6 +65,7 @@ public class JwtService {
         return (String) obterClaims(token).getSubject();
     }
 
+    //para testar
     public static void main(String[] args) {
         ConfigurableApplicationContext contexto = SpringApplication.run(VendasApplication.class);
         JwtService service = contexto.getBean(JwtService.class);
