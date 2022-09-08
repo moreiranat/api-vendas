@@ -2,6 +2,7 @@ package io.github.moreiranat.vendas.service.impl;
 
 import io.github.moreiranat.vendas.domain.entity.Usuario;
 import io.github.moreiranat.vendas.domain.repository.UsuarioRepository;
+import io.github.moreiranat.vendas.exception.SenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,17 @@ public class UsuarioServiceImpl implements UserDetailsService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
+    }
+
+    //verificar se a senha do usuario esta batendo com a senha que esta vindo do banco de dados
+    public UserDetails autenticar(Usuario usuario) {
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword()); //parametros: senha digitada (senha que vai ser comparada), senha codificada, criptografada, que vem do banco de dados
+
+        if(senhasBatem) {
+            return user;
+        }
+        throw new SenhaInvalidaException();
     }
 
     @Override
